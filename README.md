@@ -24,10 +24,29 @@
    因为 CLIP 的文本塔是在短 caption 上训的，长句偏离训练分布。
 3. **误差的大头不是 prompt，是类别本身**：prompt 只能动 5.4pp，而类别之间天然差 18pp。
 
+### 图 1 · prompt 措辞对比
+
+![prompt wording sweep](assets/W2_clip_1_prompt_acc.png)
+
+> 结论：同一个模型、同一批图，只改一句 prompt，准确率就差 5.4 个百分点。
+> 排序：#2 (89.5) > #1 (88.8) > #4 (87.8) > #3 (87.4) > #5 (84.1)。
+> 读法：误差棒是 95% CI（±0.60pp）；横轴从 80% 起——5 组都挤在 84~89.5%，从 0 起画差异只有几像素宽。
+> 随机基线 10% 在轴范围外，所以写进轴标签而不是画线（画了也不会显示，图例里反而会留一条"幽灵线"）。
+
+### 图 2 · 逐类准确率
+
+![per-class accuracy](assets/W2_clip_2_per_class_acc.png)
+
+> 结论：prompt 引起的波动只有 5.4pp，而类别本身造成 18pp 落差（frog 78% ↔ truck 96%）。
+> 掉分集中在**需要纹理细节**的类（frog、deer）；高分类是轮廓/背景高度特征化的
+> （船在水上、马在草地、飞机在天上）。
+> 噪声边界：单类 n=1000，CI 约 ±2.6pp，所以 `deer 80` 与 `frog 78` 的差在噪声内，
+> 只能说"同处最低一档"；但 `78 vs 96` 远超噪声。
+
 > ⚠️ **89.5% 这个绝对分数不可外推。** CIFAR-10 是干净网图，很可能出现在 CLIP 的 4 亿图文对
 > 预训练数据里（contamination）。本 demo 能支撑的是「相对排序」，不能支撑「CLIP 真实泛化能力」。
 
-两张结果图（prompt 对比 + 逐类准确率）见 [第 5 节 · 产物](#5-产物)。
+产物文件清单（`runs/` 与 `assets/` 的关系）见 [第 5 节 · 产物](#5-产物)。
 
 ---
 
@@ -125,35 +144,22 @@ worst classes          : ['frog', 'deer']
 ## 5. 产物
 
 ```
-runs/
+runs/                              # 脚本输出，不入库（重跑即覆盖）
 ├── W2_clip_1_prompt_acc.png      主图 · prompt 措辞对比（带 95% CI）
 ├── W2_clip_2_per_class_acc.png   副图 · 最佳 prompt 的逐类准确率
 └── clip_results.json             全部数字（含 ci95_halfwidth、shuffled_label_acc）
+
+assets/                            # README 引用的稳定副本，入库
+├── W2_clip_1_prompt_acc.png
+└── W2_clip_2_per_class_acc.png
 ```
 
-一图一 claim（两个独立结论，拆成两个 PNG，不拼盘）。
+一图一 claim：两张图对应两个**独立**结论 ——
+「prompt 措辞只动 5.4pp」与「类别本身差 18pp」。
+分开看各自还有意义，所以拆成两个 PNG 而不是拼盘；**图与结论见 [第 1 节](#1-结论先行)**。
 
-`runs/` 不入库（每次重跑会被覆盖），README 里引用的是复制到 `assets/` 的稳定副本 ——
-改了代码重跑后，把 `runs/` 里的新图覆盖到 `assets/` 再提交。
-
-### 图 1 · prompt 措辞对比（主图）
-
-![prompt wording sweep](assets/W2_clip_1_prompt_acc.png)
-
-> 同一个模型、同一批图，只改一句 prompt，准确率就差 5.4 个百分点。
-> 排序：#2 (89.5) > #1 (88.8) > #4 (87.8) > #3 (87.4) > #5 (84.1)。
-> 读法：误差棒是 95% CI（±0.60pp），横轴从 80% 起——因为 5 组都挤在 84~89.5%，
-> 从 0 起画差异只有几像素宽。随机基线 10% 在轴范围外，所以写进轴标签而不是画线。
-
-### 图 2 · 逐类准确率（副图）
-
-![per-class accuracy](assets/W2_clip_2_per_class_acc.png)
-
-> prompt 引起的波动只有 5.4pp，而类别本身造成 18pp 落差（frog 78% ↔ truck 96%）。
-> 掉分集中在**需要纹理细节**的类（frog、deer）；高分类是轮廓/背景高度特征化的
-> （船在水上、马在草地、飞机在天上）。
-> 注意：单类 n=1000，CI 约 ±2.6pp，所以 `deer 80` 与 `frog 78` 的差在噪声内，
-> 只能说"同处最低一档"；但 `78 vs 96` 远超噪声。
+改代码重跑后，把 `runs/` 里的新图覆盖到 `assets/` 再提交，README 就跟着更新 ——
+这是 `assets/` 存在的唯一理由（`runs/` 被 gitignore，直接引用会在 GitHub 上显示破图）。
 
 ---
 
