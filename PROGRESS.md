@@ -198,5 +198,5 @@ cd "d:\learning project\W2 CLIP demo"
 
 - [ ] **W1 欠账**：D3 自检 5 题（30min）、P2 论文方法框图（TII 2025，G1 验收物）
 - [x] **W1 的 B5**：推 GitHub —— GCM 已登录 `xiyang123457`，W1 仓库已推（`16fae7f..6c3f3c8`）
-- [ ] 本仓库推 GitHub（需先在网页建空仓库 `W2-CLIP-Demo`）
+- [x] 本仓库推 GitHub —— https://github.com/xiyang123457/W2-CLIP-Demo （`master` 已跟踪 `origin/master`）
 - [ ] 周日 20:00 前发周报（草稿见 W2 计划书 G 节，第 4 条已按实测数字填写）
