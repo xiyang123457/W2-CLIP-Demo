@@ -27,6 +27,8 @@
 > ⚠️ **89.5% 这个绝对分数不可外推。** CIFAR-10 是干净网图，很可能出现在 CLIP 的 4 亿图文对
 > 预训练数据里（contamination）。本 demo 能支撑的是「相对排序」，不能支撑「CLIP 真实泛化能力」。
 
+两张结果图（prompt 对比 + 逐类准确率）见 [第 5 节 · 产物](#5-产物)。
+
 ---
 
 ## 2. 环境
@@ -129,15 +131,24 @@ runs/
 └── clip_results.json             全部数字（含 ci95_halfwidth、shuffled_label_acc）
 ```
 
-一图一 claim（两个独立结论，拆成两个 PNG，不拼盘）：
+一图一 claim（两个独立结论，拆成两个 PNG，不拼盘）。
 
-**图 1 · `W2_clip_1_prompt_acc.png`**
+`runs/` 不入库（每次重跑会被覆盖），README 里引用的是复制到 `assets/` 的稳定副本 ——
+改了代码重跑后，把 `runs/` 里的新图覆盖到 `assets/` 再提交。
+
+### 图 1 · prompt 措辞对比（主图）
+
+![prompt wording sweep](assets/W2_clip_1_prompt_acc.png)
+
 > 同一个模型、同一批图，只改一句 prompt，准确率就差 5.4 个百分点。
 > 排序：#2 (89.5) > #1 (88.8) > #4 (87.8) > #3 (87.4) > #5 (84.1)。
 > 读法：误差棒是 95% CI（±0.60pp），横轴从 80% 起——因为 5 组都挤在 84~89.5%，
 > 从 0 起画差异只有几像素宽。随机基线 10% 在轴范围外，所以写进轴标签而不是画线。
 
-**图 2 · `W2_clip_2_per_class_acc.png`**
+### 图 2 · 逐类准确率（副图）
+
+![per-class accuracy](assets/W2_clip_2_per_class_acc.png)
+
 > prompt 引起的波动只有 5.4pp，而类别本身造成 18pp 落差（frog 78% ↔ truck 96%）。
 > 掉分集中在**需要纹理细节**的类（frog、deer）；高分类是轮廓/背景高度特征化的
 > （船在水上、马在草地、飞机在天上）。
@@ -219,8 +230,9 @@ W2 CLIP demo/
 ├── PROGRESS.md       W2 全量进度记录（A/B 的实测数字 + D 的完整记录）
 ├── README.md         本文件
 ├── .gitignore        忽略 weights/ 与 runs/
+├── assets/           README 引用的两张图（从 runs/ 复制的稳定副本，入库）
 ├── weights/          ViT-B-32.pt（353MB，不入库）
-└── runs/             产物（不入库）
+└── runs/             产物（不入库，重跑会覆盖）
 ```
 
 ---
