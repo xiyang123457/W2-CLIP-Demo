@@ -216,6 +216,7 @@ CLIP 的文本塔在平均约 10 词的短 caption 上训练，
 ```
 W2 CLIP demo/
 ├── demo_clip.py      主脚本（零样本分类 + prompt 对比 + 出图，五层注释）
+├── PROGRESS.md       W2 全量进度记录（A/B 的实测数字 + D 的完整记录）
 ├── README.md         本文件
 ├── .gitignore        忽略 weights/ 与 runs/
 ├── weights/          ViT-B-32.pt（353MB，不入库）
@@ -242,7 +243,9 @@ W2 CLIP demo/
 W1 的 InfoNCE 是**图-图**对比（同图两视图为正样本），本 demo 的 CLIP 是**图-文**对比（同一图文配对为正样本）。
 骨架相同，只换了「正样本对的定义」——这是 W2 的核心命题。
 
-上游记录见 `d:\learning project\W1 InfoNCE\PROGRESS.md` 的 **W2-D** 章节。
+W2 的全量记录（含 A 训练曲线、B t-SNE 的数字）在本仓库的 `PROGRESS.md`；
+W2-A / W2-B 的**代码**仍留在 W1 仓库的 `src/`（`train.py`、`plot_curve.py`、`tsne_vis.py`），
+因为它们直接复用 W1 的 `model.py` / `loss.py` / `data.py`，不复制一份出来。
 
 ## 12. 未做（明确划出边界）
 
