@@ -1,0 +1,9 @@
+# CLIP 预训练权重（353MB，永不入库）
+weights/
+
+# 产物：图 / JSON / 日志
+runs/
+
+# Python
+__pycache__/
+*.pyc
